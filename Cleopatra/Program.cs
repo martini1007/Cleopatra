@@ -2,8 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Cleopatra.Data;
 using Cleopatra.Services;
 using Hangfire;
-
-
+using Hangfire.MemoryStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +12,6 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ReminderService>();
 
-var app = builder.Build();
-
-var builder = WebApplication.CreateBuilder(args);
 
 // Dodaj Hangfire do kontenera DI
 builder.Services.AddHangfire(config => config.UseMemoryStorage());
@@ -32,11 +28,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHangfireDashboard("/hangfire");
 });
 
-app.Run();
-
-
-var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddControllersWithViews();
 
 // Add services to the container.
@@ -44,16 +35,15 @@ builder.Services.AddControllersWithViews();
 
 // Configure AppDbContext to use SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
+    
     options.UseSqlite("Data Source=cleopatra.db"));
-
-var app = builder.Build();
 
 var reminderService = app.Services.GetService<ReminderService>();
 
 RecurringJob.AddOrUpdate(
     "SendReminders",
     () => reminderService.SendRemindersAsync(),
-    Cron.Daily); // Wysy³a przypomnienia codziennie
+    Cron.Daily); // Wysyï¿½a przypomnienia codziennie
 
 // Call the SeedManually method at startup (REMOVE after adding migrations)
 using (var scope = app.Services.CreateScope())

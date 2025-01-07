@@ -95,14 +95,8 @@ namespace Cleopatra.Controllers
 
             return Ok("Appointment moved successfully.");
         }
-    }
-
-    public class MoveAppointmentRequest
-    {
-        public DateTime NewDateTime { get; set; }
-    }
-
-    [HttpPost("CreateAppointment")]
+    
+        [HttpPost("CreateAppointment")]
     public async Task<IActionResult> CreateAppointment([FromBody] CreateAppointmentRequest request)
     {
         if (request == null || request.AppointmentDateTime == default || request.EmployeeId == 0 || request.CustomerId == 0)
@@ -110,7 +104,7 @@ namespace Cleopatra.Controllers
             return BadRequest("Invalid request data.");
         }
 
-        // SprawdŸ, czy pracownik ma dostêpny termin
+        // Sprawdï¿½, czy pracownik ma dostï¿½pny termin
         var employeeSchedule = await _context.Schedules.FirstOrDefaultAsync(s => s.EmployeeId == request.EmployeeId);
 
         if (employeeSchedule == null ||
@@ -120,7 +114,7 @@ namespace Cleopatra.Controllers
             return BadRequest("The appointment time is outside the employee's schedule.");
         }
 
-        // SprawdŸ, czy s¹ konflikty z innymi wizytami
+        // Sprawdï¿½, czy sï¿½ konflikty z innymi wizytami
         var hasConflicts = await _context.Appointments.AnyAsync(a =>
             a.EmployeeId == request.EmployeeId &&
             a.AppointmentDateTime < request.AppointmentDateTime.AddMinutes(request.Duration ?? 0) &&
@@ -131,14 +125,14 @@ namespace Cleopatra.Controllers
             return Conflict("The appointment time conflicts with another appointment.");
         }
 
-        // Utwórz now¹ wizytê
+        // Utwï¿½rz nowï¿½ wizytï¿½
         var appointment = new Appointment
         {
             CustomerId = request.CustomerId,
             EmployeeId = request.EmployeeId,
             AppointmentDateTime = request.AppointmentDateTime,
             Duration = request.Duration,
-            ServiceType = request.ServiceType
+            Service = request.ServiceType
         };
 
         _context.Appointments.Add(appointment);
@@ -147,7 +141,7 @@ namespace Cleopatra.Controllers
         {
             await _context.SaveChangesAsync();
 
-            // Wyœlij e-mail potwierdzaj¹cy
+            // Wyï¿½lij e-mail potwierdzajï¿½cy
             var emailService = HttpContext.RequestServices.GetService<IEmailService>();
             var customer = await _context.Customers.FindAsync(request.CustomerId);
             if (customer != null && !string.IsNullOrEmpty(customer.Email))
@@ -169,12 +163,18 @@ namespace Cleopatra.Controllers
         }
     }
 
+    }
+
+    public class MoveAppointmentRequest
+    {
+        public DateTime NewDateTime { get; set; }
+    }
     public class CreateAppointmentRequest
     {
         public int CustomerId { get; set; }
         public int EmployeeId { get; set; }
         public DateTime AppointmentDateTime { get; set; }
         public int? Duration { get; set; } // Duration in minutes
-        public string ServiceType { get; set; }
+        public Service ServiceType { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace Cleopatra.Services
                     string subject = "Appointment Reminder";
                     string body = $"Dear {appointment.Customer.Name},<br/><br/>" +
                                   $"This is a reminder for your appointment scheduled on {appointment.AppointmentDateTime}.<br/>" +
-                                  $"Service: {appointment.ServiceType}<br/><br/>" +
+                                  $"Service: {appointment.Service}<br/><br/>" +
                                   "Thank you,<br/>Cleopatra Salon";
 
                     await _emailService.SendEmailAsync(appointment.Customer.Email, subject, body);
