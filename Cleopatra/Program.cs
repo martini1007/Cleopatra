@@ -3,57 +3,53 @@ using Cleopatra.Data;
 using Cleopatra.Services;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddTransient<IEmailService, EmailService>();
+// Configure Email Settings
+// builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+// builder.Services.AddTransient<IEmailService, EmailService>();
+// builder.Services.AddScoped<IEmailService, EmailService>();
+// builder.Services.AddScoped<ReminderService>();
 
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<ReminderService>();
+// Configure Hangfire
+// builder.Services.AddHangfire(config => config.UseMemoryStorage());
+// builder.Services.AddHangfireServer();
 
+// Configure Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
-// Dodaj Hangfire do kontenera DI
-builder.Services.AddHangfire(config => config.UseMemoryStorage());
-builder.Services.AddHangfireServer();
+// Configure Authentication Cookie
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    options.LoginPath = "/api/account/login";
+    options.AccessDeniedPath = "/api/account/accessdenied";
+    options.SlidingExpiration = true;
+});
+
+// Add Controllers with Views
+builder.Services.AddControllersWithViews();
+
+// Configure AppDbContext with SQLite
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=cleopatra.db"));
 
 var app = builder.Build();
 
-// Dodaj Dashboard Hangfire
-app.UseHangfireDashboard();
-
-// Endpoint Dashboard (opcjonalnie chroniony)
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHangfireDashboard("/hangfire");
-});
-
-builder.Services.AddControllersWithViews();
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-// Configure AppDbContext to use SQLite
-builder.Services.AddDbContext<AppDbContext>(options =>
-    
-    options.UseSqlite("Data Source=cleopatra.db"));
-
-var reminderService = app.Services.GetService<ReminderService>();
-
-RecurringJob.AddOrUpdate(
-    "SendReminders",
-    () => reminderService.SendRemindersAsync(),
-    Cron.Daily); // Wysy�a przypomnienia codziennie
-
-// Call the SeedManually method at startup (REMOVE after adding migrations)
+// Database Initialization
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
         var context = services.GetRequiredService<AppDbContext>();
-        context.Database.EnsureCreated();
-        context.SeedManually();
+        context.Database.Migrate(); // Ensure the database is created
+        context.SeedManually(); // Seed data into the database
     }
     catch (Exception ex)
     {
@@ -61,7 +57,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
+// Middleware Pipeline Configuration
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -73,8 +69,20 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication(); // Authentication middleware
+app.UseAuthorization();  // Authorization middleware
 
+// Hangfire Dashboard
+//app.UseHangfireDashboard();
+
+// Hangfire Job Configuration
+// var reminderService = app.Services.GetService<ReminderService>();
+// RecurringJob.AddOrUpdate(
+//     "SendReminders",
+//     () => reminderService.SendRemindersAsync(),
+//     Cron.Daily); // Schedule daily reminders
+
+// Endpoint Mapping
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

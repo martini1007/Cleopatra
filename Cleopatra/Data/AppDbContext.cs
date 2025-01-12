@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Cleopatra.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         // DbSets for all tables
         public DbSet<Customer> Customers { get; set; }
@@ -102,8 +103,8 @@ namespace Cleopatra.Data
             if (!Customers.Any())
             {
                 Customers.AddRange(
-                    new Customer { IdentityUserId = 1, Name = "John Doe", Email = "john@example.com", PhoneNumber = "1111111111", DateOfBirth = new DateTime(1985, 5, 15), CreatedDate = DateTime.Now },
-                    new Customer { IdentityUserId = 2, Name = "Jane Smith", Email = "jane@example.com", PhoneNumber = "2222222222", DateOfBirth = new DateTime(1990, 3, 22), CreatedDate = DateTime.Now }
+                    new Customer { IdentityUserId = "1", Name = "John Doe", Email = "john@example.com", PhoneNumber = "1111111111", DateOfBirth = new DateTime(1985, 5, 15), CreatedDate = DateTime.Now },
+                    new Customer { IdentityUserId = "2", Name = "Jane Smith", Email = "jane@example.com", PhoneNumber = "2222222222", DateOfBirth = new DateTime(1990, 3, 22), CreatedDate = DateTime.Now }
                 );
                 SaveChanges();
             }

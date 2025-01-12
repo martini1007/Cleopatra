@@ -3,7 +3,7 @@ namespace Cleopatra.Data;
 public class Customer
 {
     public int CustomerId { get; set; }
-    public int? IdentityUserId { get; set; } // Optional foreign key to IdentityUser
+    public string IdentityUserId { get; set; } // Optional foreign key to IdentityUser
     public string Name { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }

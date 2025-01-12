@@ -24,7 +24,6 @@
 /home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/Cleopatra.genruntimeconfig.cache
 /home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/ref/Cleopatra.dll
 /home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/Cleopatra.sourcelink.json
-/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Cleopatra.staticwebassets.endpoints.json
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Humanizer.dll
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.Build.Locator.dll
@@ -136,7 +135,6 @@
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-mips64/native/libe_sqlite3.so
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-musl-arm/native/libe_sqlite3.so
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-musl-arm64/native/libe_sqlite3.so
-/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-musl-s390x/native/libe_sqlite3.so
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-musl-x64/native/libe_sqlite3.so
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-ppc64le/native/libe_sqlite3.so
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-s390x/native/libe_sqlite3.so
@@ -152,9 +150,6 @@
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/win-x86/native/e_sqlite3.dll
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
 /home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/Cleopatra.csproj.AssemblyReference.cache
-/home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/staticwebassets.build.endpoints.json
-/home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/staticwebassets/msbuild.Cleopatra.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-/home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/Cleopatra.csproj.Up2Date
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Cleopatra.staticwebassets.runtime.json
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Hangfire.AspNetCore.dll
@@ -181,3 +176,13 @@
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/zh-TW/Hangfire.Core.resources.dll
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/zh/Hangfire.Core.resources.dll
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.Extensions.Identity.Core.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.Extensions.Identity.Stores.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Cleopatra.staticwebassets.endpoints.json
+/home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/staticwebassets.build.endpoints.json
+/home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/staticwebassets/msbuild.Cleopatra.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+/home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/Cleopatra.csproj.Up2Date
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-musl-s390x/native/libe_sqlite3.so
