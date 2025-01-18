@@ -186,3 +186,12 @@
 /home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/staticwebassets/msbuild.Cleopatra.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
 /home/illia/RiderProjects/Cleopatra/Cleopatra/obj/Debug/net8.0/Cleopatra.csproj.Up2Date
 /home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/runtimes/linux-musl-s390x/native/libe_sqlite3.so
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.Bcl.Memory.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/home/illia/RiderProjects/Cleopatra/Cleopatra/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll

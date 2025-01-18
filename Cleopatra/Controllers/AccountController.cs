@@ -2,21 +2,33 @@ using Cleopatra.Data;
 using Cleopatra.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cleopatra.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context)
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IConfiguration configuration,
+            AppDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration;
             _context = context;
         }
 
@@ -26,13 +38,21 @@ namespace Cleopatra.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            
+            if (model.Password != model.ConfirmPassword)
+                return BadRequest("Passwords don't match");
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
+
             var result = await _userManager.CreateAsync(user, model.Password);
-
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
+            // Add user to the Customers table
             var customer = new Customer
             {
                 IdentityUserId = user.Id,
@@ -46,7 +66,14 @@ namespace Cleopatra.Controllers
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 
-            return Ok(new { Message = "User registered and customer profile created successfully." });
+            // Generate JWT token
+            var token = GenerateJwtToken(user);
+
+            return Ok(new
+            {
+                Token = token,
+                Message = "User registered successfully."
+            });
         }
 
         // POST: api/account/login
@@ -56,12 +83,22 @@ namespace Cleopatra.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return Unauthorized(new { Message = "Invalid email or password." });
 
-            if (result.Succeeded)
-                return Ok(new { Message = "Login successful" });
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+            if (!result.Succeeded)
+                return Unauthorized(new { Message = "Invalid email or password." });
 
-            return Unauthorized(new { Message = "Invalid login attempt" });
+            // Generate JWT token
+            var token = GenerateJwtToken(user);
+
+            return Ok(new
+            {
+                Token = token,
+                Message = "Login successful."
+            });
         }
 
         // POST: api/account/logout
@@ -69,7 +106,34 @@ namespace Cleopatra.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Ok(new { Message = "Logout successful" });
+            return Ok(new { Message = "Logout successful." });
+        }
+
+        // JWT token generator
+        private string GenerateJwtToken(ApplicationUser user)
+        {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpiryMinutes"])),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

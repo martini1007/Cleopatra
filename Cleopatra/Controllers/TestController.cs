@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cleopatra.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cleopatra.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TestController : ControllerBase
