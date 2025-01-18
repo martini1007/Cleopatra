@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -65,8 +66,76 @@ namespace Cleopatra.Data
         }
         
         // TEMPORARY method for manual seeding before adding migrations to the proj
-        public void SeedManually()
-        {
+        public async Task SeedManually(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        { 
+            // Seed Roles
+            var roles = new[] { "Admin", "User" };
+            foreach (var role in roles)
+            {
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+
+            if (!Employees.Any())
+            {
+                var employees = new List<Employee>
+                {
+                    new Employee { Name = "Alice Johnson", Role = "Manager", Email = "alice@example.com", PhoneNumber = "1231231234", HireDate = DateTime.Now },
+                    new Employee { Name = "Bob Brown", Role = "Technician", Email = "bob@example.com", PhoneNumber = "4324324321", HireDate = DateTime.Now }
+                };
+
+                foreach (var employee in employees)
+                {
+                    var identityUser = new ApplicationUser
+                    {
+                        UserName = employee.Email,
+                        Email = employee.Email,
+                        EmailConfirmed = true
+                    };
+
+                    var result = await userManager.CreateAsync(identityUser, "Admin123!");
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(identityUser, "Admin");
+                        employee.IdentityUserId = identityUser.Id; // Set IdentityUserId
+                    }
+                }
+
+                Employees.AddRange(employees);
+                SaveChanges();
+            }
+
+            if (!Customers.Any())
+            {
+                var customers = new List<Customer>
+                {
+                    new Customer { Name = "John Doe", Email = "john@example.com", PhoneNumber = "1111111111", DateOfBirth = DateTime.Now, CreatedDate = DateTime.Now },
+                    new Customer { Name = "Jane Smith", Email = "jane@example.com", PhoneNumber = "2222222222", DateOfBirth = DateTime.Now, CreatedDate = DateTime.Now }
+                };
+
+                foreach (var customer in customers)
+                {
+                    var identityUser = new ApplicationUser
+                    {
+                        UserName = customer.Email,
+                        Email = customer.Email,
+                        EmailConfirmed = true
+                    };
+
+                    var result = await userManager.CreateAsync(identityUser, "User123!");
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(identityUser, "User");
+                        customer.IdentityUserId = identityUser.Id; // Set IdentityUserId
+                    }
+                }
+
+                Customers.AddRange(customers);
+                SaveChanges();
+            }
+      
             try
             {
             // Seed Services (parent table)
@@ -83,28 +152,16 @@ namespace Cleopatra.Data
             if (!Products.Any())
             {
                 Products.AddRange(
-                    new Product { Name = "Shampoo", Brand = "BrandA", QuantityInStock = 100, PricePerUnit = 5.0, LastRestockedDate = DateTime.Now },
-                    new Product { Name = "Conditioner", Brand = "BrandB", QuantityInStock = 50, PricePerUnit = 6.5, LastRestockedDate = DateTime.Now }
-                );
-                SaveChanges();
-            }
-
-            // Seed Employees (parent table for Appointments and Schedules)
-            if (!Employees.Any())
-            {
-                Employees.AddRange(
-                    new Employee { Name = "Alice Johnson", Role = "Manager", Email = "alice@example.com", PhoneNumber = "1231231234", HireDate = DateTime.Now },
-                    new Employee { Name = "Bob Brown", Role = "Technician", Email = "bob@example.com", PhoneNumber = "4324324321", HireDate = DateTime.Now }
-                );
-                SaveChanges();
-            }
-
-            // Seed Customers (parent table for Appointments and Notifications)
-            if (!Customers.Any())
-            {
-                Customers.AddRange(
-                    new Customer { IdentityUserId = "1", Name = "John Doe", Email = "john@example.com", PhoneNumber = "1111111111", DateOfBirth = new DateTime(1985, 5, 15), CreatedDate = DateTime.Now },
-                    new Customer { IdentityUserId = "2", Name = "Jane Smith", Email = "jane@example.com", PhoneNumber = "2222222222", DateOfBirth = new DateTime(1990, 3, 22), CreatedDate = DateTime.Now }
+                    new Product
+                    {
+                        Name = "Shampoo", Brand = "BrandA", QuantityInStock = 100, PricePerUnit = 5.0,
+                        LastRestockedDate = DateTime.Now
+                    },
+                    new Product
+                    {
+                        Name = "Conditioner", Brand = "BrandB", QuantityInStock = 50, PricePerUnit = 6.5,
+                        LastRestockedDate = DateTime.Now
+                    }
                 );
                 SaveChanges();
             }

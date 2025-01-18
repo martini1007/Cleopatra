@@ -170,6 +170,10 @@ namespace Cleopatra.Migrations
                     b.Property<DateTime?>("HireDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("IdentityUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");

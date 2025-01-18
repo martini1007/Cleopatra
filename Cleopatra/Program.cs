@@ -61,8 +61,13 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<AppDbContext>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        
+        
         context.Database.Migrate(); // Ensure the database is created
-        context.SeedManually(); // Seed data into the database
+        
+        await context.SeedManually(roleManager, userManager); // Seed data into the database
     }
     catch (Exception ex)
     {
