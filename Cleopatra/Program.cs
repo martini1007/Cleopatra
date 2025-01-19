@@ -46,7 +46,17 @@ builder.Services.AddAuthentication(options =>
     });
 
 // Add Controllers with Views
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // Replace with your frontend's URL
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 // Configure AppDbContext with SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -82,6 +92,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors("AllowFrontend");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -99,6 +111,8 @@ app.UseAuthorization();  // Authorization middleware
 //     "SendReminders",
 //     () => reminderService.SendRemindersAsync(),
 //     Cron.Daily); // Schedule daily reminders
+
+app.MapControllers();
 
 // Endpoint Mapping
 app.MapControllerRoute(
