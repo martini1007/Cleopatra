@@ -97,6 +97,8 @@ namespace Cleopatra.Controllers
             return Ok(new
             {
                 Token = token,
+                UserId = user.Id,
+                Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault() == "Admin" ? "Admin" : "User",
                 Message = "Login successful."
             });
         }
