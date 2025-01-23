@@ -93,9 +93,6 @@ namespace Cleopatra.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Duration")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("EmployeeId")
                         .HasColumnType("INTEGER");
 
@@ -148,9 +145,7 @@ namespace Cleopatra.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<byte[]>("ProfilePicture")
-                        .HasColumnType("BLOB");
+                    
 
                     b.HasKey("CustomerId");
 

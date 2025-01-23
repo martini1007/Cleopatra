@@ -56,11 +56,7 @@ namespace Cleopatra.Data
                 .HasOne(s => s.Employee)
                 .WithMany()
                 .HasForeignKey(s => s.EmployeeId);
-
-            // Explicitly configure ProfilePicture as a BLOB for Customer
-            modelBuilder.Entity<Customer>()
-                .Property(c => c.ProfilePicture)
-                .HasColumnType("BLOB");
+            
             
             //Seed(modelBuilder);
         }
