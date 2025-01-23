@@ -65,7 +65,6 @@ namespace Cleopatra.Controllers
             service.Name = model.Name;
             service.Description = model.Description;
             service.Price = model.Price;
-            service.Duration = model.Duration;
 
             _context.Entry(service).State = EntityState.Modified;
             await _context.SaveChangesAsync();

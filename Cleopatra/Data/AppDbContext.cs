@@ -138,8 +138,8 @@ namespace Cleopatra.Data
             if (!Services.Any())
             {
                 Services.AddRange(
-                    new Service { Name = "Haircut", Description = "Basic haircut service", Price = 20.0, Duration = 30 },
-                    new Service { Name = "Massage", Description = "Relaxing full body massage", Price = 50.0, Duration = 60 }
+                    new Service { Name = "Haircut", Description = "Basic haircut service", Price = 20.0 },
+                    new Service { Name = "Massage", Description = "Relaxing full body massage", Price = 50.0}
                 );
                 SaveChanges();
             }

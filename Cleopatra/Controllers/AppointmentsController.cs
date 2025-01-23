@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace Cleopatra.Controllers
 {
@@ -165,6 +166,18 @@ namespace Cleopatra.Controllers
         }
     }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetAllAppointments()
+        {
+            var appointments = await _context.Appointments
+                .Include(a => a.Customer)
+                .Include(a => a.Employee)
+                .Include(a => a.Service)
+                .ToListAsync();
+            
+            return Ok(JsonConvert.SerializeObject(appointments));
+        }
     }
 
     public class MoveAppointmentRequest
