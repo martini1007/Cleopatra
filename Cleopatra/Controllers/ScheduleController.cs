@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-
 namespace Cleopatra.Controllers;
 
 [AllowAnonymous]
@@ -21,7 +20,8 @@ public class ScheduleController : ControllerBase
     }
     
     // GET : get schedule for employee
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedule(int id)
     {
         IEnumerable<Schedule>? employeesSchedules = await _context.Schedules
@@ -35,5 +35,23 @@ public class ScheduleController : ControllerBase
         }
         
         return Ok(JsonSerializer.Serialize(employeesSchedules));
+    }
+    
+    // GET : get schedule for given day
+    [HttpGet("{date:datetime}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedule(DateTime date)
+    {
+        IEnumerable<Schedule>? schedules = await _context.Schedules
+            .Where(s => s.StartDateTime.Year == date.Year && s.StartDateTime.Month == date.Month && s.StartDateTime.Day == date.Day)
+            .Include(s => s.Employee)
+            .ToListAsync();
+        
+        if (schedules is null || !schedules.Any())
+        {
+            return NotFound(new { Message = "No schedules found for this date." });
+        }
+        
+        return Ok(JsonSerializer.Serialize(schedules));
     }
 }
