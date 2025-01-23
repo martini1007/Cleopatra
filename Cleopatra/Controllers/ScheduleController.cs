@@ -54,4 +54,12 @@ public class ScheduleController : ControllerBase
         
         return Ok(JsonSerializer.Serialize(schedules));
     }
+    
+    // GET : get all schedules
+    [HttpGet()]
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<Schedule>>> GetAllSchedules()
+    {
+        return Ok(JsonSerializer.Serialize(await _context.Schedules.Include(s => s.Employee).ToListAsync()));
+    }
 }
