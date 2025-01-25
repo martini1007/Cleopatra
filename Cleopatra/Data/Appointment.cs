@@ -10,7 +10,7 @@ public class Appointment
     public int ServiceId { get; set; }
     public Service Service { get; set; } // Navigation property
     public DateTime AppointmentDateTime { get; set; }
-    public int? Duration { get; set; }
+    
     public string Status { get; set; }
     public string Notes { get; set; }
 }

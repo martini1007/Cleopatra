@@ -1,5 +1,5 @@
 using Cleopatra.Data;
-using Cleopatra.Services;
+using SendEmail.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

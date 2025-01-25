@@ -186,8 +186,8 @@ namespace Cleopatra.Data
             if (!Appointments.Any())
             {
                 Appointments.AddRange(
-                    new Appointment { CustomerId = Customers.First().CustomerId, EmployeeId = Employees.First().EmployeeId, ServiceId = Services.First().ServiceId, AppointmentDateTime = DateTime.Now.AddDays(1), Duration = 30, Status = "Confirmed", Notes = "First appointment" },
-                    new Appointment { CustomerId = Customers.Skip(1).First().CustomerId, EmployeeId = Employees.Skip(1).First().EmployeeId, ServiceId = Services.Skip(1).First().ServiceId, AppointmentDateTime = DateTime.Now.AddDays(2), Duration = 60, Status = "Pending", Notes = "Second appointment" }
+                    new Appointment { CustomerId = Customers.First().CustomerId, EmployeeId = Employees.First().EmployeeId, ServiceId = Services.First().ServiceId, AppointmentDateTime = DateTime.Now.AddDays(1), Status = "Confirmed", Notes = "First appointment" },
+                    new Appointment { CustomerId = Customers.Skip(1).First().CustomerId, EmployeeId = Employees.Skip(1).First().EmployeeId, ServiceId = Services.Skip(1).First().ServiceId, AppointmentDateTime = DateTime.Now.AddDays(2),  Status = "Pending", Notes = "Second appointment" }
                 );
                 SaveChanges();
             }

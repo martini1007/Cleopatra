@@ -1,18 +1,18 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Cleopatra.Data;
-using Cleopatra.Services;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using SendEmail.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Email Settings
 // builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-// builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 // builder.Services.AddScoped<IEmailService, EmailService>();
 // builder.Services.AddScoped<ReminderService>();
 

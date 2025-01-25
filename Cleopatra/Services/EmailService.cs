@@ -1,52 +1,68 @@
-using MailKit.Net.Smtp;
-using MimeKit;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Mail;
 
-namespace Cleopatra.Services
+namespace SendEmail.Services
 {
-    public class EmailService : IEmailService
+    public interface IEmailService
     {
-        private readonly EmailSettings _emailSettings;
-
-        public EmailService(EmailSettings emailSettings)
-        {
-            _emailSettings = emailSettings;
-        }
-
-        public async Task SendEmailAsync(string to, string subject, string body)
-        {
-            var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.SenderEmail));
-            emailMessage.To.Add(new MailboxAddress("", to));
-            emailMessage.Subject = subject;
-
-            var bodyBuilder = new BodyBuilder
-            {
-                HtmlBody = body,
-                TextBody = body
-            };
-
-            emailMessage.Body = bodyBuilder.ToMessageBody();
-
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync(_emailSettings.SmtpServer, _emailSettings.SmtpPort, _emailSettings.UseSsl);
-                await client.AuthenticateAsync(_emailSettings.SmtpUser, _emailSettings.SmtpPassword);
-
-                await client.SendAsync(emailMessage);
-                await client.DisconnectAsync(true);
-            }
-        }
+        Task SendEmailAsync(string receptor, string subject, string body);
     }
 
-    public class EmailSettings
+    public class EmailService : IEmailService
     {
-        public string SenderName { get; set; }
-        public string SenderEmail { get; set; }
-        public string SmtpServer { get; set; }
-        public int SmtpPort { get; set; }
-        public string SmtpUser { get; set; }
-        public string SmtpPassword { get; set; }
-        public bool UseSsl { get; set; }
+        private readonly IConfiguration _configuration;
+
+        public EmailService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public async Task SendEmailAsync(string receptor, string subject, string body)
+        {
+            var email = _configuration.GetValue<string>("EMAIL_CONFIGURATION:EMAIL")?.Trim();
+            var password = _configuration.GetValue<string>("EMAIL_CONFIGURATION:PASSWORD")?.Trim();
+            var host = _configuration.GetValue<string>("EMAIL_CONFIGURATION:HOST")?.Trim();
+            var port = _configuration.GetValue<int>("EMAIL_CONFIGURATION:PORT");
+
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(host))
+            {
+                throw new InvalidOperationException("Email configuration is missing or invalid.");
+            }
+
+            using var smtpClient = new SmtpClient(host, port)
+            {
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(email, password)
+            };
+
+            if (string.IsNullOrWhiteSpace(receptor) || !receptor.Contains("@"))
+            {
+                throw new ArgumentException("Invalid recipient email address.");
+            }
+
+            
+            subject = subject?.Replace("\"", "").Trim();
+            body = body?.Replace("\"", "").Trim();
+
+            var message = new MailMessage
+            {
+                From = new MailAddress(email),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true 
+            };
+
+            message.To.Add(receptor.Trim('"'));
+
+            try
+            {
+                await smtpClient.SendMailAsync(message);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to send email: {ex.Message}");
+            }
+        }
     }
 }

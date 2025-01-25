@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cleopatra")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+104243f22f5c5e06582116cd2ac8fc152dd9b068")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1336c6508e4d220813753b27f67f7e351253d16a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cleopatra")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cleopatra")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
