@@ -152,7 +152,7 @@ namespace Cleopatra.Controllers
         }
 
         // ✅ Endpoint: Pobranie wszystkich wizyt
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllAppointments()
         {
@@ -162,6 +162,20 @@ namespace Cleopatra.Controllers
                 .Include(a => a.Service)
                 .ToListAsync();
 
+            return Ok(JsonConvert.SerializeObject(appointments));
+        }
+
+        [Authorize]
+        [HttpGet("GetAppointments/{employeeId}")]
+        public async Task<IActionResult> GetAllAppointmentsByEmployeeId(int employeeId)
+        {
+            var appointments = await _context.Appointments
+                .Where(a => a.EmployeeId == employeeId)
+                .Include(a => a.Customer)
+                .Include(a => a.Employee)
+                .Include(a => a.Service)
+                .ToListAsync();
+            
             return Ok(JsonConvert.SerializeObject(appointments));
         }
     }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Cleopatra.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class TestController : ControllerBase
