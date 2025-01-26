@@ -178,6 +178,32 @@ namespace Cleopatra.Controllers
             
             return Ok(JsonConvert.SerializeObject(appointments));
         }
+        
+        [Authorize]
+        [HttpGet("history/{customerId}")]
+        public async Task<IActionResult> GetHistoryOfAppointments(int customerId)
+        {
+            var pastAppointments = await _context.Appointments
+                .Where(a => a.CustomerId == customerId && a.AppointmentDateTime < DateTime.Now)
+                .Include(a => a.Customer)
+                .Include(a => a.Employee)
+                .Include(a => a.Service)
+                .ToListAsync();
+            
+            var futureAppointments = await _context.Appointments
+                .Where(a => a.CustomerId == customerId && a.AppointmentDateTime > DateTime.Now)
+                .Include(a => a.Customer)
+                .Include(a => a.Employee)
+                .Include(a => a.Service)
+                .ToListAsync();
+            
+            return Ok(JsonConvert.SerializeObject(
+                new
+                {
+                    PastAppointments = pastAppointments,
+                    FutureAppointments = futureAppointments
+                }));
+        }
     }
 
     // ✅ Modele DTO
