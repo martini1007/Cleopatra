@@ -56,10 +56,33 @@ public class ScheduleController : ControllerBase
     }
     
     // GET : get all schedules
-    [HttpGet()]
-    [AllowAnonymous]
+    [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<IEnumerable<Schedule>>> GetAllSchedules()
     {
         return Ok(JsonSerializer.Serialize(await _context.Schedules.Include(s => s.Employee).ToListAsync()));
+    }
+
+    [AllowAnonymous]
+    [HttpPost("MoveSchedule/{scheduleId:int}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<Schedule>> MoveSchedule([FromQuery] int ScheduleId, string NewStartTime, string NewEndTime)
+    {
+        if (!DateTime.TryParse(NewStartTime, out DateTime startTime))
+        {
+            return BadRequest(new { Message = "Invalid start time format." });
+        }
+        
+        if (!DateTime.TryParse(NewEndTime, out DateTime endTime))
+        {
+            return BadRequest(new { Message = "Invalid end time format." });
+        }
+        
+        _context.Schedules.First(s => s.ScheduleId == ScheduleId).StartDateTime = startTime;
+        _context.Schedules.First(s => s.ScheduleId == ScheduleId).EndDateTime = endTime;
+        
+        _context.SaveChanges();
+        
+        return Ok("Schedule moved.");
     }
 }

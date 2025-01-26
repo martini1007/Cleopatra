@@ -3,6 +3,7 @@ using System;
 using Cleopatra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cleopatra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250118044618_UpdateEmployeeAndCustomerSchema")]
+    partial class UpdateEmployeeAndCustomerSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -93,6 +96,9 @@ namespace Cleopatra.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("Duration")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("INTEGER");
 
@@ -145,6 +151,9 @@ namespace Cleopatra.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("BLOB");
 
                     b.HasKey("CustomerId");
 
@@ -326,6 +335,9 @@ namespace Cleopatra.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("Duration")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -20,6 +20,7 @@
           "net8.0"
         ],
         "sources": {
+          "/usr/lib64/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -36,7 +37,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
         "SdkAnalysisLevel": "9.0.100"
       },
@@ -98,15 +99,7 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.11, 8.0.11]"
-            },
-            {
               "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[8.0.11, 8.0.11]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
               "version": "[8.0.11, 8.0.11]"
             }
           ],
@@ -118,7 +111,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/illia/.dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

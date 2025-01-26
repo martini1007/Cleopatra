@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IQ1rA5iyh6w=",
+  "dgSpecHash": "Xo5ofzRA5QA=",
   "success": true,
   "projectFilePath": "/home/illia/RiderProjects/Cleopatra/Cleopatra/Cleopatra.csproj",
   "expectedPackageFiles": [
@@ -82,20 +82,7 @@
     "/home/illia/.nuget/packages/system.text.encodings.web/9.0.0/system.text.encodings.web.9.0.0.nupkg.sha512",
     "/home/illia/.nuget/packages/system.text.json/9.0.0/system.text.json.9.0.0.nupkg.sha512",
     "/home/illia/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
-    "/home/illia/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
-    "/home/illia/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.11/microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512",
     "/home/illia/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.11/microsoft.netcore.app.host.linux-x64.8.0.11.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Newtonsoft.Json' 11.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
-      "libraryId": "Newtonsoft.Json",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  "logs": []
 }
