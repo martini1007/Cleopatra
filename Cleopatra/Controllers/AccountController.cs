@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Cleopatra.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
@@ -94,13 +94,31 @@ namespace Cleopatra.Controllers
             // Generate JWT token
             var token = GenerateJwtToken(user);
 
-            return Ok(new
+            string role = _userManager.GetRolesAsync(user).Result.FirstOrDefault() == "Admin" ? "Admin" : "User";
+
+            if (role == "User")
             {
-                Token = token,
-                UserId = _context.Customers.Where(c => c.IdentityUserId == user.Id).Select(c => c.CustomerId).FirstOrDefault(),
-                Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault() == "Admin" ? "Admin" : "User",
-                Message = "Login successful."
-            });
+                return Ok(new
+                {
+                    Token = token,
+                    UserId = _context.Customers.Where(c => c.IdentityUserId == user.Id).Select(c => c.CustomerId).FirstOrDefault(),
+                    Role = role,
+                    Message = "Login successful."
+                });
+            }
+            
+            if (role == "Admin")
+            {
+                return Ok(new
+                {
+                    Token = token,
+                    UserId = _context.Employees.Where(c => c.IdentityUserId == user.Id).Select(c => c.EmployeeId).FirstOrDefault(),
+                    Role = role,
+                    Message = "Login successful."
+                });
+            }
+            
+            return BadRequest(new { Message = "Error occured while determining the role of a user" });
         }
 
         // POST: api/account/logout
