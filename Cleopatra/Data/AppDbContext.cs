@@ -166,8 +166,8 @@ namespace Cleopatra.Data
             if (!Schedules.Any())
             {
                 Schedules.AddRange(
-                    new Schedule { EmployeeId = Employees.First().EmployeeId, StartDateTime = DateTime.Now.AddHours(1), EndDateTime = DateTime.Now.AddHours(5), BreakTimes = "12:00-12:30" },
-                    new Schedule { EmployeeId = Employees.Skip(1).First().EmployeeId, StartDateTime = DateTime.Now.AddHours(2), EndDateTime = DateTime.Now.AddHours(6), BreakTimes = "14:00-14:30" }
+                    new Schedule { EmployeeId = Employees.First().EmployeeId, StartDateTime = DateTime.Now.AddHours(1), EndDateTime = DateTime.Now.AddHours(5)},
+                    new Schedule { EmployeeId = Employees.Skip(1).First().EmployeeId, StartDateTime = DateTime.Now.AddHours(2), EndDateTime = DateTime.Now.AddHours(6)}
                 );
                 SaveChanges();
             }

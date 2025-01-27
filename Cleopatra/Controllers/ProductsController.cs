@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Cleopatra.Data;
+using Cleopatra.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetEmployees()
+    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
     {
         IEnumerable<Product>? products = await _context.Products.ToListAsync();
         
@@ -33,7 +34,7 @@ public class ProductsController : ControllerBase
     
     [HttpGet]
     [Route("{id}")]
-    public async Task<ActionResult<IEnumerable<Product>>> GetEmployeesById(int id)
+    public async Task<ActionResult<IEnumerable<Product>>> GetProductsById(int id)
     {
         IEnumerable<Product>? products = await _context.Products.Where(c => c.ProductId == id).ToListAsync();
         
@@ -43,5 +44,62 @@ public class ProductsController : ControllerBase
         }
         
         return Ok(JsonSerializer.Serialize(products));
+    }
+    
+    [HttpPost]
+    [Route("AddProduct")]
+    public async Task<ActionResult<Product>> AddProduct([FromBody] AddProductModel addProductModel)
+    {
+        if (!DateTime.TryParse(addProductModel.LastRestockedDate, out DateTime lastRestockedDate))
+        {
+            return BadRequest(new { Message = "Invalid last restocked date!" });
+        }
+
+        var newProduct = new Product
+        {
+            Name = addProductModel.Name,
+            Brand = addProductModel.Brand,
+            QuantityInStock = addProductModel.QuantityInStock,
+            PricePerUnit = addProductModel.PricePerUnit,
+            LastRestockedDate = lastRestockedDate
+        };
+        
+        _context.Products.Add(newProduct);
+        await _context.SaveChangesAsync();
+        
+        return Ok("Product added successfully!");
+    }
+    
+    [HttpPost]
+    [Route("UpdateProduct/{productId:int}")]
+    public async Task<ActionResult<Product>> UpdateProduct([FromRoute] int productId, [FromBody] AddProductModel addProductModel)
+    {
+        if (!DateTime.TryParse(addProductModel.LastRestockedDate, out DateTime lastRestockedDate))
+        {
+            return BadRequest(new { Message = "Invalid last restocked date!" });
+        }
+        
+        var newProduct = new Product
+        {
+            ProductId = productId,
+            Name = addProductModel.Name,
+            Brand = addProductModel.Brand,
+            QuantityInStock = addProductModel.QuantityInStock,
+            PricePerUnit = addProductModel.PricePerUnit,
+            LastRestockedDate = lastRestockedDate
+        };
+        
+        var oldProduct = await _context.Products.FirstOrDefaultAsync(c => c.ProductId == productId);
+
+        if (oldProduct is null)
+        {
+            return NotFound(new { Message = "No product with provided id found!" });
+        }
+        
+        _context.Products.Entry(oldProduct).CurrentValues.SetValues(newProduct);
+        
+        await _context.SaveChangesAsync();
+        
+        return Ok("Product updated successfully!");
     }
 }

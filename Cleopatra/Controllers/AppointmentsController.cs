@@ -164,6 +164,20 @@ namespace Cleopatra.Controllers
 
             return Ok(JsonConvert.SerializeObject(appointments));
         }
+        
+        // ✅ Endpoint: Pobranie wszystkich wizyt
+        [Authorize]
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetAppointmentById(int id)
+        {
+            var appointment = await _context.Appointments
+                .Include(a => a.Customer)
+                .Include(a => a.Employee)
+                .Include(a => a.Service)
+                .FirstAsync(a => a.AppointmentId == id);
+
+            return Ok(JsonConvert.SerializeObject(appointment));
+        }
 
         [Authorize]
         [HttpGet("GetAppointments/{employeeId}")]

@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Cleopatra.Models;
 
 namespace Cleopatra.Controllers;
 
-[AllowAnonymous]
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class ScheduleController : ControllerBase
@@ -21,7 +22,6 @@ public class ScheduleController : ControllerBase
     
     // GET : get schedule for employee
     [HttpGet("{id:int}")]
-    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedule(int id)
     {
         IEnumerable<Schedule>? employeesSchedules = await _context.Schedules
@@ -39,7 +39,7 @@ public class ScheduleController : ControllerBase
     
     // GET : get schedule for given day
     [HttpGet("{date:datetime}")]
-    [Authorize(Roles = "Admin")]
+    
     public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedule(DateTime date)
     {
         IEnumerable<Schedule>? schedules = await _context.Schedules
@@ -57,15 +57,15 @@ public class ScheduleController : ControllerBase
     
     // GET : get all schedules
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    
     public async Task<ActionResult<IEnumerable<Schedule>>> GetAllSchedules()
     {
         return Ok(JsonSerializer.Serialize(await _context.Schedules.Include(s => s.Employee).ToListAsync()));
     }
 
-    [AllowAnonymous]
+    
     [HttpPost("MoveSchedule/{scheduleId:int}")]
-    [Authorize(Roles = "Admin")]
+    
     public async Task<ActionResult<Schedule>> MoveSchedule([FromQuery] int ScheduleId, string NewStartTime, string NewEndTime)
     {
         if (!DateTime.TryParse(NewStartTime, out DateTime startTime))
@@ -84,5 +84,37 @@ public class ScheduleController : ControllerBase
         _context.SaveChanges();
         
         return Ok("Schedule moved.");
+    }
+    
+    [HttpPut("AddSchedule")]
+    public async Task<ActionResult<Schedule>> AddSchedule([FromBody] AddScheduleModel scheduleModel)
+    {
+
+        if (!DateTime.TryParse(scheduleModel.StartTime, out DateTime startTime))
+        {
+            return BadRequest(new { Message = "Invalid start time format." });
+        }
+
+        if (!DateTime.TryParse(scheduleModel.EndTime, out DateTime endTime))
+        {
+            return BadRequest(new { Message = "Invalid end time format." });
+        }
+        
+        var newSchedule = new Schedule
+        {
+            EmployeeId = scheduleModel.EmployeeId,
+            StartDateTime = startTime,
+            EndDateTime = endTime
+        };
+        
+        if (_context.Schedules.Contains(newSchedule))
+        {
+            return BadRequest(new { Message = "Schedule already exists." });
+        }
+        
+        _context.Schedules.Add(newSchedule);
+        await _context.SaveChangesAsync();
+        
+        return Ok("Schedule added.");
     }
 }

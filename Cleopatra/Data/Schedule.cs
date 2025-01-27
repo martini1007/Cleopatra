@@ -7,5 +7,4 @@ public class Schedule
     public Employee Employee { get; set; } // Navigation property
     public DateTime StartDateTime { get; set; }
     public DateTime EndDateTime { get; set; }
-    public string BreakTimes { get; set; }
 }
