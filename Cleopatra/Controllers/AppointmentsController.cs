@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace Cleopatra.Controllers
 {
@@ -85,6 +86,70 @@ namespace Cleopatra.Controllers
             }
 
             return Ok("Appointment moved successfully.");
+        }
+
+        // ✅ Endpoint: Anulowanie wizyty przez pracownika
+        [AllowAnonymous]
+        [HttpDelete("CancelAppointment/{id}")]
+        public async Task<IActionResult> CancelAppointment(int id)
+        {
+            var appointment = await _context.Appointments
+                .Include(a => a.Customer)
+                .FirstOrDefaultAsync(a => a.AppointmentId == id);
+
+            if (appointment == null)
+                return NotFound("Appointment not found.");
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var employee = _context.Employees.FirstOrDefault(e => e.IdentityUserId == userId);
+            var employeeId = employee?.EmployeeId;
+
+
+            if (appointment.EmployeeId != employeeId)
+            {
+                return Forbid();
+            }
+
+            appointment.Status = "Cancelled";
+
+            _context.Appointments.Remove(appointment);
+            await _context.SaveChangesAsync();
+
+            var emailMessage = $"<h2>Twoja wizyta została odwołana przez pracownika.</h2>" +
+                $"<p>Data: <b>{appointment.AppointmentDateTime:dd MMM yyyy, HH:mm}</b></p>" +
+                "<p>Przepraszamy za niedogodności.</p>";
+            await _emailService.SendEmailAsync(appointment.Customer.Email, "Appointment Cancelled", emailMessage);
+
+            return Ok("Appointment cancelled and deleted successfully.");
+        }
+
+
+
+        // ✅ Endpoint: Usunięcie wizyty przez klienta
+        [AllowAnonymous]
+        [HttpDelete("DeleteAppointment/{id}")]
+        public async Task<IActionResult> DeleteAppointment(int id)
+        {
+            var appointment = await _context.Appointments
+                .Include(a => a.Customer)
+                .FirstOrDefaultAsync(a => a.AppointmentId == id);
+
+            if (appointment == null)
+                return NotFound("Appointment not found.");
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var customer = _context.Customers.FirstOrDefault(c => c.IdentityUserId == userId);
+            var customerId = customer?.CustomerId;
+
+            if (appointment.CustomerId != customerId)
+            {
+                return Forbid();
+            }
+
+            _context.Appointments.Remove(appointment);
+            await _context.SaveChangesAsync();
+
+            return Ok("Appointment deleted successfully.");
         }
 
         [AllowAnonymous]
