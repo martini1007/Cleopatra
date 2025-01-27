@@ -40,17 +40,7 @@ namespace Cleopatra.Controllers
             if (appointment == null)
                 return NotFound("Appointment not found.");
 
-            // ✅ Sprawdzenie dostępności pracownika
-            var employeeSchedule = await _context.Schedules
-                .FirstOrDefaultAsync(s => s.EmployeeId == appointment.EmployeeId);
-
-            if (employeeSchedule == null ||
-                request.NewDateTime < employeeSchedule.StartDateTime ||
-                request.NewDateTime > employeeSchedule.EndDateTime)
-            {
-                return BadRequest("The new time is outside the employee's schedule.");
-            }
-            
+           
             // ✅ Sprawdzenie konfliktów
             var hasConflicts = await _context.Appointments.AnyAsync(a =>
                 a.EmployeeId == appointment.EmployeeId &&
@@ -103,12 +93,7 @@ namespace Cleopatra.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var employee = _context.Employees.FirstOrDefault(e => e.IdentityUserId == userId);
             var employeeId = employee?.EmployeeId;
-
-
-            if (appointment.EmployeeId != employeeId)
-            {
-                return Forbid();
-            }
+            
 
             appointment.Status = "Cancelled";
 
@@ -140,12 +125,7 @@ namespace Cleopatra.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var customer = _context.Customers.FirstOrDefault(c => c.IdentityUserId == userId);
             var customerId = customer?.CustomerId;
-
-            if (appointment.CustomerId != customerId)
-            {
-                return Forbid();
-            }
-
+            
             _context.Appointments.Remove(appointment);
             await _context.SaveChangesAsync();
 
@@ -159,15 +139,6 @@ namespace Cleopatra.Controllers
         {
             if (request == null || request.AppointmentDateTime == default || request.EmployeeId == 0 || request.CustomerId == 0)
                 return BadRequest("Invalid request data.");
-
-            // ✅ Sprawdzenie dostępności pracownika
-            var employeeSchedule = await _context.Schedules.FirstOrDefaultAsync(s => s.EmployeeId == request.EmployeeId);
-            if (employeeSchedule == null ||
-                request.AppointmentDateTime < employeeSchedule.StartDateTime ||
-                request.AppointmentDateTime > employeeSchedule.EndDateTime)
-            {
-                return BadRequest("The appointment time is outside the employee's schedule.");
-            }
 
             // ✅ Sprawdzenie konfliktów
             var hasConflicts = await _context.Appointments.AnyAsync(a =>
