@@ -4455,25 +4455,32 @@
     ]
   },
   "packageFolders": {
-    "/home/illia/.nuget/packages/": {}
+    "C:\\Users\\marci\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/illia/RiderProjects/Cleopatra/Cleopatra/Cleopatra.csproj",
+      "projectUniqueName": "C:\\Users\\marci\\Cleopatra\\Cleopatra\\Cleopatra.csproj",
       "projectName": "Cleopatra",
-      "projectPath": "/home/illia/RiderProjects/Cleopatra/Cleopatra/Cleopatra.csproj",
-      "packagesPath": "/home/illia/.nuget/packages/",
-      "outputPath": "/home/illia/RiderProjects/Cleopatra/Cleopatra/obj/",
+      "projectPath": "C:\\Users\\marci\\Cleopatra\\Cleopatra\\Cleopatra.csproj",
+      "packagesPath": "C:\\Users\\marci\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\marci\\Cleopatra\\Cleopatra\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/illia/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\marci\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/lib64/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4550,12 +4557,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.NETCore.App.Host.linux-x64",
-            "version": "[8.0.11, 8.0.11]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -4564,7 +4565,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
