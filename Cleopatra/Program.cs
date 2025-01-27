@@ -11,14 +11,7 @@ using SendEmail.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Email Settings
-// builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailService, EmailService>();
-// builder.Services.AddScoped<IEmailService, EmailService>();
-// builder.Services.AddScoped<ReminderService>();
-
-// Configure Hangfire
-// builder.Services.AddHangfire(config => config.UseMemoryStorage());
-// builder.Services.AddHangfireServer();
 
 // Configure Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

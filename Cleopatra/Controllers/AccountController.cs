@@ -91,10 +91,11 @@ namespace Cleopatra.Controllers
             if (!result.Succeeded)
                 return Unauthorized(new { Message = "Invalid email or password." });
 
-            // Generate JWT token
-            var token = GenerateJwtToken(user);
-
             string role = _userManager.GetRolesAsync(user).Result.FirstOrDefault() == "Admin" ? "Admin" : "User";
+            
+            // Generate JWT token
+            var token = GenerateJwtToken(user, role);
+
 
             if (role == "User")
             {
@@ -130,7 +131,7 @@ namespace Cleopatra.Controllers
         }
 
         // JWT token generator
-        private string GenerateJwtToken(ApplicationUser user)
+        private string GenerateJwtToken(ApplicationUser user, string role = "User")
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
 
@@ -142,7 +143,8 @@ namespace Cleopatra.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, role)
             };
 
             var token = new JwtSecurityToken(
