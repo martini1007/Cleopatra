@@ -29,5 +29,24 @@ namespace Cleopatra.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+        
+        [HttpGet("date/{date}")]
+        public IActionResult GetScheduleReportByDate(string date)
+        {
+            try
+            {
+                if (!DateTime.TryParse(date, out var parsedDate))
+                {
+                    return BadRequest(new { Message = "Invalid date format. Use YYYY-MM-DD." });
+                }
+
+                var pdfBytes = _pdfReportService.GenerateScheduleReportByDate(parsedDate);
+                return File(pdfBytes, "application/pdf", $"Schedule_Report_{parsedDate:yyyy-MM-dd}.pdf");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
     }
 }
