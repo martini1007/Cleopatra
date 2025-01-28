@@ -75,6 +75,51 @@ namespace Cleopatra.Controllers
                 Message = "User registered successfully."
             });
         }
+        
+        // POST: api/account/register
+        [HttpPost("register/employee")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RegisterEmployee([FromBody] RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            if (model.Password != model.ConfirmPassword)
+                return BadRequest("Passwords don't match");
+
+            var employee = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
+
+            var result = await _userManager.CreateAsync(employee, model.Password);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            // Add user to the Customers table
+            var Employee = new Employee
+            {
+                IdentityUserId = employee.Id,
+                Name = model.Name,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                HireDate = DateTime.UtcNow,
+                Role = "Employee"
+            };
+
+            _context.Employees.Add(Employee);
+            await _context.SaveChangesAsync();
+
+            // Generate JWT token
+            var token = GenerateJwtToken(employee, "Admin");
+
+            return Ok(new
+            {
+                Token = token,
+                Message = "User registered successfully."
+            });
+        }
 
         // POST: api/account/login
         [HttpPost("login")]

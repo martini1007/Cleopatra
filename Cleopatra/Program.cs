@@ -1,17 +1,23 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Cleopatra.Data;
+using Cleopatra.Services;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using QuestPDF.Infrastructure;
 using SendEmail.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Email Settings
 builder.Services.AddTransient<IEmailService, EmailService>();
+
+// Configure Pdf Reprots Generation Settings
+QuestPDF.Settings.License = LicenseType.Community;
+builder.Services.AddScoped<PdfReportService>();
 
 // Configure Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

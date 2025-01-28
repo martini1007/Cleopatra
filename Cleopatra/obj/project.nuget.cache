@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IQ1rA5iyh6w=",
+  "dgSpecHash": "5GrUcZq8GhA=",
   "success": true,
   "projectFilePath": "/home/illia/RiderProjects/Cleopatra/Cleopatra/Cleopatra.csproj",
   "expectedPackageFiles": [
@@ -59,6 +59,7 @@
     "/home/illia/.nuget/packages/mimekit/4.9.0/mimekit.4.9.0.nupkg.sha512",
     "/home/illia/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
     "/home/illia/.nuget/packages/newtonsoft.json/11.0.1/newtonsoft.json.11.0.1.nupkg.sha512",
+    "/home/illia/.nuget/packages/questpdf/2024.12.3/questpdf.2024.12.3.nupkg.sha512",
     "/home/illia/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.10/sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
     "/home/illia/.nuget/packages/sqlitepclraw.core/2.1.10/sqlitepclraw.core.2.1.10.nupkg.sha512",
     "/home/illia/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.10/sqlitepclraw.lib.e_sqlite3.2.1.10.nupkg.sha512",

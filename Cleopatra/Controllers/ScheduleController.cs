@@ -8,7 +8,7 @@ using Cleopatra.Models;
 
 namespace Cleopatra.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ScheduleController : ControllerBase
