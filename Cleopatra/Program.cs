@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Email Settings
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-// Configure Pdf Reprots Generation Settings
+// Configure Pdf Reports Generation Settings
 QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddScoped<PdfReportService>();
 
@@ -51,7 +51,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // Replace with your frontend's URL
+        policy.WithOrigins("http://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -100,16 +100,6 @@ app.UseRouting();
 
 app.UseAuthentication(); // Authentication middleware
 app.UseAuthorization();  // Authorization middleware
-
-// Hangfire Dashboard
-//app.UseHangfireDashboard();
-
-// Hangfire Job Configuration
-// var reminderService = app.Services.GetService<ReminderService>();
-// RecurringJob.AddOrUpdate(
-//     "SendReminders",
-//     () => reminderService.SendRemindersAsync(),
-//     Cron.Daily); // Schedule daily reminders
 
 app.MapControllers();
 
