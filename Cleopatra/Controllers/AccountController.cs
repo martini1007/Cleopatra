@@ -97,6 +97,8 @@ namespace Cleopatra.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
+            await _userManager.AddToRoleAsync(employee, "Admin");
+
             // Add user to the Customers table
             var Employee = new Employee
             {
