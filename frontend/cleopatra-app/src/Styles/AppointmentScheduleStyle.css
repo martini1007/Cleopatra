@@ -1,0 +1,164 @@
+/* AppointmentScheduleStyle.css */
+
+/* Ogólne style */
+.app-schedule {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+  margin: 0;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  color: #222; /* Ciemny kolor tekstu */
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Date picker styles */
+.date-picker {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid #6f4f1e; /* Złota linia pod datą */
+  padding-bottom: 10px;
+}
+
+.date-picker label {
+  font-size: 1.2rem;
+  color: #6f4f1e; /* Złoty kolor */
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.date-picker input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #6f4f1e; /* Złota ramka */
+  border-radius: 5px;
+  width: 150px;
+  max-width: 100%;
+  background-color: #fff;
+}
+
+/* Appointment list styles */
+.appointments {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.appointments ul {
+  padding: 0;
+  list-style-type: none;
+  width: 100%;
+  max-width: 800px;
+}
+
+.app-list {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Złote akcenty na wizytach */
+.app-list:hover {
+  background-color: #f0f0f0;
+  border-left: 4px solid #6f4f1e; /* Złoty pasek po lewej stronie przy hoverze */
+}
+
+.app-list.selected {
+  background-color: #e0f7fa;
+  border-left: 4px solid #6f4f1e;
+}
+
+.app-list strong {
+  color: #222;
+  font-weight: bold;
+}
+
+.app-list .notes {
+  color: #777;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Buttons for rescheduling, deleting, confirming */
+button {
+  background-color: #6f4f1e; /* Złoty odcień */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background-color: #4e3b1f; /* Ciemniejszy złoty */
+  transform: translateY(-3px); /* Lekka animacja przy hoverze */
+}
+
+button:active {
+  transform: translateY(1px); /* Lekka animacja przy kliknięciu */
+}
+
+/* Styl dla przycisku "Potwierdź" */
+button:last-child {
+  background-color: #222; /* Czerń dla potwierdzenia */
+}
+
+button:last-child:hover {
+  background-color: #444; /* Ciemniejsza czerń */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .date-picker {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .appointments {
+    padding: 10px;
+  }
+
+  .app-list {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-schedule {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .date-picker input {
+    width: 100%;
+  }
+}

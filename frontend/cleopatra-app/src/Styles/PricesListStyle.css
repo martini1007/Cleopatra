@@ -1,0 +1,135 @@
+/* PricesListStyle.css */
+
+/* Główne tło dla listy cennika */
+.prices-list {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  padding: 40px 20px;
+  margin: 0 auto;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tytuł cennika */
+.prices-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #222;
+  margin-bottom: 30px;
+}
+
+/* Lista usług */
+.service-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Elementy usług */
+.service-item {
+  background-color: #fff;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.service-name {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.service-duration,
+.service-price {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* 🔹 Zwiększona wysokość przycisku 🔹 */
+.schedule-button {
+  background-color: #6f4f1e; /* Złoty kolor */
+  color: #fff;
+  padding: 12px 20px; /* Większa wysokość */
+  border: none;
+  border-radius: 5px; /* Nieco większe zaokrąglenie */
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: auto; /* Dopasowana szerokość */
+  margin-top: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.schedule-button:hover {
+  background-color: #4e3b1f;
+  transform: translateY(-2px);
+}
+
+.schedule-button:active {
+  transform: translateY(1px);
+}
+
+/* Styl ładowania */
+.loading {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #333;
+  padding: 20px;
+}
+
+/* Styl błędu */
+.error-message {
+  font-size: 1.2rem;
+  color: #e74c3c;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .prices-list {
+    padding: 30px 15px;
+  }
+
+  .prices-title {
+    font-size: 1.6rem;
+  }
+
+  .service-item {
+    padding: 12px;
+  }
+
+  .service-name {
+    font-size: 1.2rem;
+  }
+
+  .schedule-button {
+    font-size: 0.9rem;
+    padding: 12px 18px; /* Na średnich ekranach przycisk minimalnie większy */
+  }
+}
+
+@media (max-width: 480px) {
+  .prices-list {
+    padding: 20px 10px;
+  }
+
+  .prices-title {
+    font-size: 1.4rem;
+  }
+
+  .service-item {
+    padding: 10px;
+  }
+
+  .service-name {
+    font-size: 1.1rem;
+  }
+
+  .schedule-button {
+    font-size: 0.85rem;
+    padding: 20px 20px; /* Trochę większy, ale nadal kompaktowy */
+  }
+}

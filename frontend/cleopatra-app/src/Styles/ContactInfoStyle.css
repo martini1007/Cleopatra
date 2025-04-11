@@ -1,0 +1,112 @@
+/* ContactInfoStyle.css */
+
+/* Ogólne style */
+.contact-page {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  padding: 40px 20px;
+  margin: 0;
+  min-height: 100vh;
+}
+
+h2 {
+  text-align: center;
+  color: #222;
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+/* Adres */
+.address {
+  text-align: center;
+  color: #6f4f1e; /* Złoty akcent */
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+
+/* Kontener dla sekcji kontaktowych */
+.contact-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* Sekcje kontaktowe (dane kontaktowe, godziny otwarcia, media społecznościowe) */
+.contact, .hours, .socialmedia {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 30%;
+  min-width: 250px;
+  border-left: 4px solid #6f4f1e; /* Złota linia po lewej */
+}
+
+h3 {
+  color: #222;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+/* Style dla list */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+li strong {
+  color: #6f4f1e; /* Złoty kolor dla tytułów */
+}
+
+/* Map */
+.map {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .contact-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact, .hours, .socialmedia {
+    width: 100%;
+    min-width: auto;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  .address {
+    font-size: 1rem;
+  }
+
+  .contact-info {
+    padding: 10px;
+  }
+
+  li {
+    font-size: 0.9rem;
+  }
+}
